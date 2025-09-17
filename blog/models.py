@@ -14,7 +14,7 @@ class Tag(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     def __str__(self):
-        return f"#{self.id}" - {self.title}
+        return f"{self.title}"
     
     class Meta:
         ordering = [
@@ -74,11 +74,17 @@ class PostImage(models.Model):
     
 
 class Post(models.Model):
-    #user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, verbose_name=_("User"))
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, verbose_name=_("User"))
     title = models.CharField(max_length=250, verbose_name=_("Title"))
+
+    keywords = models.TextField(null=True, blank=True, verbose_name=_("Meta keywords"))
+    description = models.TextField(null=True, blank=True, verbose_name=_("Meta description"))
+
+    excerpt = models.TextField(max_length=250, verbose_name=_("Excerpt"))
     content = models.TextField(verbose_name=_("Content"))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_("Tags"), related_name="posts")
     post_image = models.ForeignKey(PostImage, blank=True, null=True, on_delete=models.SET_NULL, verbose_name=_("Post image"), related_name="the_posts")
+    featured = models.BooleanField(default=False, verbose_name=_("Featured"))
     published = models.BooleanField(default=True, verbose_name=_("Published"))
 
 
