@@ -10,6 +10,48 @@ from blog import models
 
 User = get_user_model()
 
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "email", 
+        "text_excerpt",
+        "post",
+        
+        "created_at",
+        "updated_at",
+        "published"
+    ]
+
+    list_display_links = [
+        "id",
+        "email"
+    ]
+
+    list_filter = [
+        "created_at",
+        "updated_at",
+        "email",
+        "published",
+        "post"
+    ]
+
+    search_fields = [
+        "email",
+        "text"
+    ]
+
+    list_editable = [
+        "published"
+    ]
+
+
+class CommentInline(admin.StackedInline):
+    model = models.Comment
+    extra = 0
+
+
+
 class TagAdmin(admin.ModelAdmin):
     list_display = [
         "id",
@@ -104,6 +146,11 @@ class PostAdmin(SummernoteModelAdmin):
     ]
 
 
+    inlines = [
+        CommentInline
+    ]
+
+
     # actions
     actions = [
         "set_to_published",
@@ -178,6 +225,7 @@ class PostAdmin(SummernoteModelAdmin):
 
 
 
+admin.site.register(models.Comment, CommentAdmin)
 admin.site.register(models.Tag, TagAdmin)
 admin.site.register(models.PostImage, PostImageAdmin)
 admin.site.register(models.Post, PostAdmin)

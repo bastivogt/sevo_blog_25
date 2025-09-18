@@ -9,6 +9,9 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+
+
+
 class Tag(models.Model):
     title = models.CharField(max_length=150, verbose_name=_("Title"))
 
@@ -126,6 +129,32 @@ class Post(models.Model):
             "-created_at"
         ]
         verbose_name = _("Post")
+
+
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name=_("Post"), related_name="comments")
+    email = models.EmailField(verbose_name=_("Email"))
+    text = models.TextField(verbose_name=_("Text"))
+    published = models.BooleanField(default=True, verbose_name=_("Published"))
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
+
+    def __str__(self):
+        return f"{ſelf.email} - {self.text_excerpt} - [{self.post}]" 
+
+    @property
+    def text_excerpt(self):
+        return self.text[:50] + " ..."
+
+    class Meta:
+        ordering = [
+            "-created_at"
+        ]
+        verbose_name = _("Comment")
+
 
     
 
