@@ -90,7 +90,9 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_("Tags"), related_name="posts")
     post_image = models.ForeignKey(PostImage, blank=True, null=True, on_delete=models.SET_NULL, verbose_name=_("Post image"), related_name="the_posts")
     featured = models.BooleanField(default=False, verbose_name=_("Featured"))
+    allow_comments = models.BooleanField(default=True, verbose_name=_("Allow comments"))
     published = models.BooleanField(default=True, verbose_name=_("Published"))
+
 
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))

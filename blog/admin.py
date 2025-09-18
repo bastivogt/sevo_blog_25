@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext as _
 
 from django.contrib.auth import get_user_model
 
@@ -123,6 +124,8 @@ class PostAdmin(SummernoteModelAdmin):
         "get_image_tag",
         "id", 
         "title",
+        "featured",
+        "allow_comments",
         "published",
         "created_at",
         "updated_at"
@@ -135,7 +138,7 @@ class PostAdmin(SummernoteModelAdmin):
     ]
 
     list_editable = [
-        #"published"
+        "published"
     ]
 
     list_filter = [
@@ -143,6 +146,8 @@ class PostAdmin(SummernoteModelAdmin):
         "updated_at",
         "user",
         "tags",
+        "featured",
+        "allow_comments",
         "published"
     ]
 
@@ -168,6 +173,8 @@ class PostAdmin(SummernoteModelAdmin):
         "get_image_link",
         "content",
         "excerpt",
+        "featured",
+        "allow_comments",
         "published"
     ]
 
@@ -186,22 +193,53 @@ class PostAdmin(SummernoteModelAdmin):
     # actions
     actions = [
         "set_to_published",
-        "set_to_draft"
+        "set_to_draft",
+
+        "make_featured",
+        "make_disfeatured",
+
+        "allow_comments",
+        "disallow_comments"
+
     ]
 
-    @admin.display(description="Publish selected Post")
+    @admin.display(description=_("Publish selected Post"))
     def set_to_published(self, request, queryset):
         count = queryset.update(published=True)
         self.message_user(request, f"{count} Posts have been published.")
     
     
 
-    @admin.display(description="Unpublish selected Post")
+    @admin.display(description=_("Unpublish selected Post"))
     def set_to_draft(self, request, queryset):
         count = queryset.update(published=False)
         self.message_user(request, f"{count} Posts have been setted to drafts.")
 
     #set_to_draft.short_description = "Set Post to draft"
+
+
+    @admin.display(description=_("Featured selected Post"))
+    def make_featured(self, request, queryset):
+        count = queryset.update(featured=True)
+        self.message_user(request, f"{count} Posts have been made featured.")
+
+
+    @admin.display(description=_("Disfeatured selected Post"))
+    def make_disfeatured(self, request, queryset):
+        count = queryset.update(featured=False)
+        self.message_user(request, f"{count} Posts have been made undo featured.")
+
+
+    @admin.display(description=_("Allow comments at selected Post"))
+    def allow_comments(self, request, queryset):
+        count = queryset.update(allow_comments=True)
+        self.message_user(request, f"{count} Posts have been made to allow comments.")
+
+
+    @admin.display(description=_("Disallow comments at selected Post"))
+    def disallow_comments(self, request, queryset):
+        count = queryset.update(allow_comments=False)
+        self.message_user(request, f"{count} Posts have been made to disallow comments.")
 
 
 

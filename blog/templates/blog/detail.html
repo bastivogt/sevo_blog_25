@@ -16,15 +16,17 @@
             {% endautoescape %}
         </p>
     </div>
-    <hr>
-    <div>
-        <h4>Write a comment:</h4>
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="{% trans "Send" %}">
-        </form>
-    </div>
+    {% if post.allow_comments %}
+        <hr>
+        <div>
+            <h4>Write a comment:</h4>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="{% trans "Send" %}">
+            </form>
+        </div>
+    {% endif %}
 
     {% if post.comments.first %}
         <hr>
@@ -38,4 +40,7 @@
             {% endfor %}
         </div>
     {% endif %}
+    <div>
+        <a href="{% url "blog:index" %}">Back to Blog</a>
+    </div>
 {% endblock %}
