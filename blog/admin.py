@@ -2,6 +2,8 @@ from django.contrib import admin
 
 from django.contrib.auth import get_user_model
 
+from django_summernote.admin import SummernoteModelAdmin
+
 from blog import models
 
 
@@ -37,8 +39,13 @@ class PostImageAdmin(admin.ModelAdmin):
     ]
 
 
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(SummernoteModelAdmin):
+
+    summernote_fields = [
+        'content'
+    ]
     # list_per_page = 50
+
     list_display = [
         "get_image_tag",
         "id", 
