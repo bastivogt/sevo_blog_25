@@ -23,7 +23,7 @@ class Tag(models.Model):
     
     class Meta:
         ordering = [
-            "-updated_at"
+            "-created_at"
         ]
         verbose_name = _("Tag")
 
@@ -71,7 +71,7 @@ class PostImage(models.Model):
     
     class Meta:
         ordering = [
-            "-updated_at"
+            "-created_at"
         ]
         verbose_name = "Post Image"
 
@@ -85,7 +85,7 @@ class Post(models.Model):
     keywords = models.TextField(null=True, blank=True, verbose_name=_("Meta keywords"))
     description = models.TextField(null=True, blank=True, verbose_name=_("Meta description"))
 
-    excerpt = models.TextField(max_length=250, verbose_name=_("Excerpt"))
+    excerpt = models.TextField(max_length=250, null=True, blank=True, verbose_name=_("Excerpt"))
     content = models.TextField(verbose_name=_("Content"))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_("Tags"), related_name="posts")
     post_image = models.ForeignKey(PostImage, blank=True, null=True, on_delete=models.SET_NULL, verbose_name=_("Post image"), related_name="the_posts")
@@ -98,6 +98,12 @@ class Post(models.Model):
 
     def __str__(self):
         return f"#{self.id} - {self.title}"
+    
+
+    def get_excerpt(self, char_count=100):
+        if self.excerpt:
+            return self.excerpt[:char_count] + " ..."
+        return self.content[:char_count] + " ..."
     
 
     @admin.display(description=_("Image preview"))
@@ -147,7 +153,11 @@ class Comment(models.Model):
 
     @property
     def text_excerpt(self):
-        return self.text[:50] + " ..."
+        return self.text[:20] + " ..."
+    
+    @property
+    def email_excerpt(self): 
+        return self.email[:20] + " ..."
 
     class Meta:
         ordering = [

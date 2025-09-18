@@ -50,6 +50,19 @@ class CommentInline(admin.StackedInline):
     model = models.Comment
     extra = 0
 
+    fields = [
+        "email",
+        "text",
+        "created_at",
+        "updated_at",
+        "published",
+    ]
+
+    readonly_fields = [
+        "created_at",
+        "updated_at"
+    ]
+
 
 
 class TagAdmin(admin.ModelAdmin):
@@ -65,6 +78,15 @@ class TagAdmin(admin.ModelAdmin):
         "title"
     ]
 
+    list_filter = [
+        "created_at",
+        "updated_at"
+    ]
+
+    search_fields = [
+        "title"
+    ]
+
 class PostImageAdmin(admin.ModelAdmin):
     list_display = [
         "get_image_tag",
@@ -77,6 +99,15 @@ class PostImageAdmin(admin.ModelAdmin):
     list_display_links = [
         "get_image_tag",
         "id",
+        "title"
+    ]
+
+    list_filter = [
+        "created_at",
+        "updated_at"
+    ]
+
+    search_fields = [
         "title"
     ]
 
@@ -136,6 +167,7 @@ class PostAdmin(SummernoteModelAdmin):
         "get_image_tag_link",
         "get_image_link",
         "content",
+        "excerpt",
         "published"
     ]
 
@@ -211,7 +243,7 @@ class PostAdmin(SummernoteModelAdmin):
         )
     
 
-    # remove the user of the filterlist
+    # remove the user field of the filterlist
     def get_list_filter(self, request):
         lf = super().get_list_filter(request)
         print(lf)

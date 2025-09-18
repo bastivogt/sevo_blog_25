@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <small>{{ post.created_at }}</small>
+    <div>
+        <p>
+            {% autoescape off %}
+                {{ post.content }}
+            {% endautoescape %}
+        </p>
+    </div>
+    <hr>
+    <div>
+        <h4>Write a comment:</h4>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="{% trans "Send" %}">
+        </form>
+    </div>
+
+    {% if post.comments.first %}
+        <hr>
+        <h4>Comments:</h4>
+        <div class="comments">
+            {% for comment in comments %}
+                <div class="comment">
+                    <p>{{ comment.text }}</p>
+                    <small>by: <a href="mailto:{{ comment.email }}">{{ comment.email }}</a></small>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
