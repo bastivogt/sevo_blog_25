@@ -91,6 +91,7 @@ class Post(models.Model):
     post_image = models.ForeignKey(PostImage, blank=True, null=True, on_delete=models.SET_NULL, verbose_name=_("Post image"), related_name="the_posts")
     featured = models.BooleanField(default=False, verbose_name=_("Featured"))
     allow_comments = models.BooleanField(default=True, verbose_name=_("Allow comments"))
+    show_comments = models.BooleanField(default=True, verbose_name=_("Show comments"))
     published = models.BooleanField(default=True, verbose_name=_("Published"))
 
 

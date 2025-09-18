@@ -7,8 +7,28 @@
 
 
 {% block content %}
+
+    {% if post.post_image %}
+        <header class="post-header">
+            <img class="post-header-image" src="{{ post.post_image.image.url }}" alt="{{ post.post_image.title }}">
+        </header>
+    {% else %}
+        <header class="post-header">
+            <div class="post-header-no-image"></div>
+        </header>
+    {% endif %}
     <h1>{{ title }}</h1>
-    <small>{{ post.created_at }}</small>
+    <small>{% trans "Posted by" %} {{ post.user.first_name }} {{ post.user.last_name }} {% trans "at" %} {{ post.created_at }}</small>
+    {% if post.tags.first %}
+    <div>
+        <small>
+            {% trans "Tags:" %}
+            {% for tag in post.tags.all %}
+                <a class="post-tag-link" href="{% url "blog:tag_detail" pk=tag.pk %}">{{ tag }}</a>
+            {% endfor %}
+        </small>
+    </div>
+    {% endif %}
     <div>
         <p>
             {% autoescape off %}
@@ -16,31 +36,41 @@
             {% endautoescape %}
         </p>
     </div>
-    {% if post.allow_comments %}
-        <hr>
+    <br>
+    <div>
+        <a href="{% url "blog:index" %}">{% trans "Back to Posts" %}</a>
+    </div>
+    {% if post.show_comments %}
+        {% if post.allow_comments %}
+            <hr>
+            <div>
+                <h4>Write a comment:</h4>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit" value="{% trans "Send" %}">
+                </form>
+            </div>
+        {% endif %}
+
+        {% if post.comments.first %}
+            <hr>
+            <h4>Comments:</h4>
+            <div class="comments">
+                {% for comment in comments %}
+                    <div class="comment">
+                        <p>{{ comment.text }}</p>
+                        <small>{% trans "Comment by:" %} <a href="mailto:{{ comment.email }}">{{ comment.email }}</a></small>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    
+        <br>
         <div>
-            <h4>Write a comment:</h4>
-            <form action="" method="post">
-                {% csrf_token %}
-                {{ form }}
-                <input type="submit" value="{% trans "Send" %}">
-            </form>
+            <a href="{% url "blog:index" %}">{% trans "Back to Posts" %}</a>
         </div>
     {% endif %}
 
-    {% if post.comments.first %}
-        <hr>
-        <h4>Comments:</h4>
-        <div class="comments">
-            {% for comment in comments %}
-                <div class="comment">
-                    <p>{{ comment.text }}</p>
-                    <small>by: <a href="mailto:{{ comment.email }}">{{ comment.email }}</a></small>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-    <div>
-        <a href="{% url "blog:index" %}">Back to Blog</a>
-    </div>
+
 {% endblock %}

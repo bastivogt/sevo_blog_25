@@ -33,3 +33,15 @@ def detail(request, pk):
         "form": form,
         "comments": comments
     })
+
+
+
+# tag
+def tag_detail(request, pk):
+    tag = get_object_or_404(models.Tag, pk=pk)
+    posts = tag.posts.filter(published=True)
+    return render(request, "blog/tag_detail.html",{
+        "title": tag.title,
+        "tag": tag,
+        "posts": posts
+    })

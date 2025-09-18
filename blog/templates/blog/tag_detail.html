@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block title %}
     {{ title }}
@@ -6,7 +7,6 @@
 
 
 {% block content %}
-    <div class="box"></div>
     <h1>{{ title }}</h1>
     {% if posts %}
         <ul>
@@ -19,4 +19,8 @@
     {% else %}
         <p>No Posts available.</p>
     {% endif %}
+    <br>
+    <div>
+        <a class="back-link" href="#">{% trans "Back" %}</a>
+    </div>
 {% endblock %}

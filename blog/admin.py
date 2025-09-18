@@ -126,6 +126,7 @@ class PostAdmin(SummernoteModelAdmin):
         "title",
         "featured",
         "allow_comments",
+        "show_comments",
         "published",
         "created_at",
         "updated_at"
@@ -148,6 +149,7 @@ class PostAdmin(SummernoteModelAdmin):
         "tags",
         "featured",
         "allow_comments",
+        "show_comments",
         "published"
     ]
 
@@ -175,6 +177,7 @@ class PostAdmin(SummernoteModelAdmin):
         "excerpt",
         "featured",
         "allow_comments",
+        "show_comments",
         "published"
     ]
 
@@ -199,7 +202,10 @@ class PostAdmin(SummernoteModelAdmin):
         "make_disfeatured",
 
         "allow_comments",
-        "disallow_comments"
+        "disallow_comments",
+
+        "show_comments",
+        "hide_comments"
 
     ]
 
@@ -240,6 +246,17 @@ class PostAdmin(SummernoteModelAdmin):
     def disallow_comments(self, request, queryset):
         count = queryset.update(allow_comments=False)
         self.message_user(request, f"{count} Posts have been made to disallow comments.")
+
+
+    @admin.display(description=_("Show comments at selected Post"))
+    def show_comments(self, request, queryset):
+        count = queryset.update(show_comments=True)
+        self.message_user(request, f"{count} Posts have been shown comments.")
+
+    @admin.display(description=_("Hide comments at selected Post"))
+    def hide_comments(self, request, queryset):
+        count = queryset.update(show_comments=False)
+        self.message_user(request, f"{count} Posts have been hidden comments.")
 
 
 
