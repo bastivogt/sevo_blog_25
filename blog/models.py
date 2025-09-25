@@ -11,6 +11,25 @@ User = get_user_model()
 
 
 from blog import settings
+from sevo_core import models as sevo_models
+
+class Member(sevo_models.BaseTimeStampsMixin):
+    first_name = models.CharField(max_length=255, verbose_name=_("First name"))
+    last_name = models.CharField(max_length=255, verbose_name="Last name")
+    date_of_birth = models.DateField()
+
+    @property
+    def fullname(self):
+        return f"{self.first_name} {self.last_name}"
+
+    def __str__(self):
+        return f"{self.fullname}"
+
+    class Meta:
+        ordering = [
+            "-updated_at"
+        ]
+
 
 
 
@@ -81,8 +100,8 @@ class PostImage(models.Model):
 
     
 
-class Post(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, verbose_name=_("User"))
+class Post(sevo_models.BaseUserMixin, sevo_models.BaseTimeStampsMixin):
+    # user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, verbose_name=_("User"))
     title = models.CharField(max_length=250, verbose_name=_("Title"))
 
     keywords = models.TextField(null=True, blank=True, verbose_name=_("Meta keywords"))
@@ -92,15 +111,15 @@ class Post(models.Model):
     content = models.TextField(verbose_name=_("Content"))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_("Tags"), related_name="posts")
     post_image = models.ForeignKey(PostImage, blank=True, null=True, on_delete=models.SET_NULL, verbose_name=_("Post image"), related_name="the_posts")
-    featured = models.BooleanField(default=settings.POST_FEATURED, verbose_name=_("Featured"))
-    allow_comments = models.BooleanField(default=settings.POST_ALLOW_COMMENTS, verbose_name=_("Allow comments"))
-    show_comments = models.BooleanField(default=settings.POST_SHOW_COMMENTS, verbose_name=_("Show comments"))
-    published = models.BooleanField(default=settings.POST_PUBLISHED, verbose_name=_("Published"))
+    featured = models.BooleanField(default=settings.BLOG_POST_FEATURED, verbose_name=_("Featured"))
+    allow_comments = models.BooleanField(default=settings.BLOG_POST_ALLOW_COMMENTS, verbose_name=_("Allow comments"))
+    show_comments = models.BooleanField(default=settings.BLOG_POST_SHOW_COMMENTS, verbose_name=_("Show comments"))
+    published = models.BooleanField(default=settings.BLOG_POST_PUBLISHED, verbose_name=_("Published"))
 
 
 
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
-    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
+    # created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    # updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     def __str__(self):
         return f"#{self.id} - {self.title}"
@@ -149,7 +168,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name=_("Post"), related_name="comments")
     email = models.EmailField(verbose_name=_("Email"))
     text = models.TextField(verbose_name=_("Text"))
-    published = models.BooleanField(default=True, verbose_name=_("Published"))
+    published = models.BooleanField(default=settings.BLOG_COMMENT_PUBLISHED, verbose_name=_("Published"))
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))

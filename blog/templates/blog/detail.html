@@ -60,7 +60,7 @@
                 {% for comment in comments %}
                     <div class="comment">
                         <p>{{ comment.text }}</p>
-                        <small>{% trans "Comment by:" %} <a href="mailto:{{ comment.email }}">{{ comment.email }}</a></small>
+                        <small>{% trans "Comment by:" %} <a href="mailto:{{ comment.email }}">{{ comment.email }}</a>, {% trans "on:" %} {{ comment.created_at }}</small>
                     </div>
                 {% endfor %}
             </div>

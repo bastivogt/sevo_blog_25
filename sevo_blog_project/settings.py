@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     "django_summernote",
     
+    "sevo_core",
     "blog"
 ]
 
@@ -136,5 +137,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # blog
 # POST_PUBLISHED = False
-POST_ALLOW_COMMENTS = False
-POST_SHOW_COMMENTS = False
+BLOG_POST_ALLOW_COMMENTS = False
+BLOG_POST_SHOW_COMMENTS = False
