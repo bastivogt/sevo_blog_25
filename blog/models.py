@@ -10,6 +10,9 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+from blog import settings
+
+
 
 
 class Tag(models.Model):
@@ -89,10 +92,10 @@ class Post(models.Model):
     content = models.TextField(verbose_name=_("Content"))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_("Tags"), related_name="posts")
     post_image = models.ForeignKey(PostImage, blank=True, null=True, on_delete=models.SET_NULL, verbose_name=_("Post image"), related_name="the_posts")
-    featured = models.BooleanField(default=False, verbose_name=_("Featured"))
-    allow_comments = models.BooleanField(default=True, verbose_name=_("Allow comments"))
-    show_comments = models.BooleanField(default=True, verbose_name=_("Show comments"))
-    published = models.BooleanField(default=True, verbose_name=_("Published"))
+    featured = models.BooleanField(default=settings.POST_FEATURED, verbose_name=_("Featured"))
+    allow_comments = models.BooleanField(default=settings.POST_ALLOW_COMMENTS, verbose_name=_("Allow comments"))
+    show_comments = models.BooleanField(default=settings.POST_SHOW_COMMENTS, verbose_name=_("Show comments"))
+    published = models.BooleanField(default=settings.POST_PUBLISHED, verbose_name=_("Published"))
 
 
 
