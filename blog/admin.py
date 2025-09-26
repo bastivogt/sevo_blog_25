@@ -113,6 +113,16 @@ class PostImageAdmin(admin.ModelAdmin):
         "title"
     ]
 
+    fields = [
+        "title",
+        "image",
+        "get_image_tag_link"
+    ]
+
+    readonly_fields = [
+        "get_image_tag_link"
+    ]
+
 
 class PostAdmin(SummernoteModelAdmin, sevo_admin.BaseUserMixinAdmin):
 

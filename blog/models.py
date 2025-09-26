@@ -34,11 +34,9 @@ class Member(sevo_models.BaseTimeStampsMixin):
 
 
 
-class Tag(models.Model):
+class Tag(sevo_models.BaseTimeStampsMixin):
     title = models.CharField(max_length=150, verbose_name=_("Title"))
 
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
-    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     def __str__(self):
         return f"{self.title}"
@@ -50,12 +48,10 @@ class Tag(models.Model):
         verbose_name = _("Tag")
 
 
-class PostImage(models.Model):
+class PostImage(sevo_models.BaseTimeStampsMixin):
     title = models.CharField(max_length=150)
     image = models.ImageField(upload_to="uploads/images/blog")
 
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
-    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     def __str__(self):
         return f"#{self.id} - {self.title}"

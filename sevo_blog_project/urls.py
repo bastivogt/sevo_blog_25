@@ -21,16 +21,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from django.contrib import admin
+from django.views.generic import RedirectView
 
 admin.site.site_header = "Sevo Blog admin"
 admin.site.site_title = "Sevo Blog admin"
-admin.site.index_title = "Sevo Blog administration"
+admin.site.index_title = "Sevo Blog administration",
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('summernote/', include('django_summernote.urls')),
     
-    path("posts/", include("blog.urls"))
+    path("posts/", include("blog.urls")),
+    path("", RedirectView.as_view(pattern_name="blog:index"), name="index")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
