@@ -33,7 +33,9 @@ urlpatterns = [
     path('summernote/', include('django_summernote.urls')),
     
     path("posts/", include("blog.urls")),
-    path("", RedirectView.as_view(pattern_name="blog:index"), name="index")
+    path("", RedirectView.as_view(pattern_name="blog:index"), name="index"),
+
+    path("api/blog/", include("blog.api.urls"))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

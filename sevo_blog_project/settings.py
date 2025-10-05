@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     "django_summernote",
+    "rest_framework",
     
     "sevo_core",
     "blog"
