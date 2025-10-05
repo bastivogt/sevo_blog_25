@@ -32,7 +32,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('summernote/', include('django_summernote.urls')),
     
-    path("posts/", include("blog.urls")),
+    path("blog/", include("blog.urls")),
     path("", RedirectView.as_view(pattern_name="blog:index"), name="index"),
 
     path("api/blog/", include("blog.api.urls"))
