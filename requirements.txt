@@ -1,4 +1,10 @@
 asgiref==3.9.1
+bleach==6.2.0
 Django==5.2.6
+django-filter==25.2
+django-summernote==0.8.20.0
+djangorestframework==3.16.1
+Markdown==3.9
 pillow==11.3.0
 sqlparse==0.5.3
+webencodings==0.5.1
